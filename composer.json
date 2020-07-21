@@ -8,7 +8,10 @@
     ],
     "require": {
         "slim/slim": "4.*",
-        "slim/psr7": "^1.1"
+        "slim/psr7": "^1.1",
+        "doctrine/orm": "^2.6.2",
+        "symfony/yaml": "2.*",
+        "vlucas/phpdotenv": "^5.1"
     },
     "autoload": {
         "psr-4": {
