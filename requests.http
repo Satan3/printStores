@@ -1,0 +1,13 @@
+### Получение списка категорий
+GET http://print-stores/categories?XDEBUG_SESSION_START=1
+Accept: */*
+Cache-Control: no-cache
+
+### Создание категории
+POST http://print-stores/categories/create?XDEBUG_SESSION_START=1&name=test
+Accept: */*
+Cache-Control: no-cache
+
+{"name":"test"}
+
+### Удаление категории
