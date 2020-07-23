@@ -19,6 +19,7 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
          $category->setName($dto->get('name'));
          $this->_em->persist($category);
          $this->_em->flush();
+         return $category;
     }
 
     public function getList() {
