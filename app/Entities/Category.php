@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="\App\Repositories\CategoryRepository")
  * @ORM\Table(name="categories")
  */
-class Category {
+class Category extends BaseEntity {
 
     /**
      * @ORM\Id
@@ -35,5 +35,12 @@ class Category {
 
     public function setName($name) {
         $this->name = $name;
+    }
+
+    public function toArray(): array {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        ];
     }
 }
