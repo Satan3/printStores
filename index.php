@@ -20,5 +20,6 @@ $app->get('/', function (Request $request, Response $response, $args) {
 });
 
 $app->get('/categories', CategoryController::class . ':index');
+$app->post('/categories/create', CategoryController::class . ':create');
 
 $app->run();
