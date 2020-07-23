@@ -22,10 +22,7 @@ class CategoryController extends BaseController {
     public function index(ServerRequestInterface $request, ResponseInterface $response) {
         $response = new ResponseWrapper($response);
         $fGetList = function (Category $item) {
-            return [
-                'id' => $item->getId(),
-                'name' => $item->getName(),
-            ];
+            return $item->toArray();
         };
         return $response->toJson(array_map($fGetList, $this->categoryRepository->getList()));
     }
