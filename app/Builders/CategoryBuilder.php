@@ -5,8 +5,8 @@ namespace App\Builders;
 use App\DTO\CategoryDTO;
 
 class CategoryBuilder extends BaseBuilder {
-    private $dtoFields = [
+    protected $dtoFields = [
         'name'
     ];
-    private $dtoClass = CategoryDTO::class;
+    protected $dtoClass = CategoryDTO::class;
 }
