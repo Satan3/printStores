@@ -4,9 +4,14 @@ Accept: */*
 Cache-Control: no-cache
 
 ### Создание категории
-POST http://print-stores/categories/create?XDEBUG_SESSION_START=1&name=test
+POST http://print-stores/categories/create?XDEBUG_SESSION_START=1
 Accept: */*
 Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="first"; filename="input.txt"
+< ./index.php
 
 {"name":"test"}
 
