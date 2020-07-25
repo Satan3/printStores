@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Builders\CategoryBuilder;
 use App\Entities\Category;
+use App\Wrappers\RequestWrapper;
 use App\Wrappers\ResponseWrapper;
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
@@ -29,7 +30,8 @@ class CategoryController extends BaseController {
 
     public function create(ServerRequestInterface $request, ResponseInterface $response) {
         $response = new ResponseWrapper($response);
-        $dto = (new CategoryBuilder())->buildDTO($request->getQueryParams());
+        $request = new  RequestWrapper($request);
+        $dto = (new CategoryBuilder())->buildDTO($request->getBody());
         return $response->toJson($this->categoryRepository->create($dto)->toArray());
     }
 }
