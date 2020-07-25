@@ -2,16 +2,9 @@
 
 namespace App\Wrappers;
 
-use Psr\Http\Message\ServerRequestInterface;
-
-class RequestWrapper {
-    private $request;
-
-    public function __construct(ServerRequestInterface $request) {
-        $this->request = $request;
-    }
+class RequestWrapper extends BaseWrapper {
 
     public function getBody() {
-        return json_decode($this->request->getBody()->getContents(), true);
+        return json_decode($this->getEntity()->getBody()->getContents(), true) ?? [];
     }
 }
