@@ -26,7 +26,8 @@ class Category extends BaseEntity {
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="File", mappedBy="entityId")
+     * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity="File", mappedBy="id")
      */
     private $file;
 
@@ -45,6 +46,11 @@ class Category extends BaseEntity {
 
     public function getFile(): File {
         return $this->file;
+    }
+
+    public function setFile(File $file): self {
+        $this->file = $file;
+        return $this;
     }
 
     public function toArray(): array {

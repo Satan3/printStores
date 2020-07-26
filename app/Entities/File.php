@@ -27,17 +27,6 @@ class File {
      */
     private $path;
 
-    /**
-     * @var string $type
-     * @ORM\Column(type="string")
-     */
-    private $type;
-
-    /**
-     * @var int $entityId
-     * @ORM\Column(type="integer")
-     */
-    private $entityId;
 
     public function getId(): int {
         return $this->id;
@@ -49,24 +38,6 @@ class File {
 
     public function setPath($path): self {
         $this->path = $path;
-        return $this;
-    }
-
-    public function getType(): string {
-        return $this->type;
-    }
-
-    public function setType($type): self {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function getEntityId(): int {
-        return $this->entityId;
-    }
-
-    public function setEntityId($entityId): self {
-        $this->entityId = $entityId;
         return $this;
     }
 }
