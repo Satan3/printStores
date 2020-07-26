@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Builders\CategoryBuilder;
 use App\Entities\Category;
 use App\Wrappers\RequestWrapper;
 use App\Wrappers\ResponseWrapper;
@@ -10,13 +9,13 @@ use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Rakit\Validation\Validator;
 
 class CategoryController extends BaseController {
-    protected $container;
     protected $categoryRepository;
 
     public function __construct(ContainerInterface $container, EntityManager $entityManager) {
-        $this->container = $container;
+        parent::__construct($container, $entityManager);
         $this->categoryRepository = $entityManager->getRepository(Category::class);
     }
 
@@ -29,9 +28,16 @@ class CategoryController extends BaseController {
     }
 
     public function create(ServerRequestInterface $request, ResponseInterface $response) {
+        $request = new RequestWrapper($request);
         $response = new ResponseWrapper($response);
-        $request = new  RequestWrapper($request);
-        $dto = (new CategoryBuilder())->buildDTO($request->getBody());
-        return $response->toJson($this->categoryRepository->create($dto)->toArray());
+        $validator = new Validator();
+        $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
+            'name' => 'required',
+            'image' => 'required|uploaded_file',
+        ]);
+        if ($validation->fails()) {
+            return $response->toJson($validation->errors());
+        }
+        return $response->toJson($this->categoryRepository->create(array_merge($request->getValidatedData()))->toArray());
     }
 }
