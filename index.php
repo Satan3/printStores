@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\CategoryController;
+use App\Wrappers\AppWrapper;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -16,6 +17,7 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $routeCollector = $app->getRouteCollector();
 $routeCollector->setDefaultInvocationStrategy(new RequestResponseArgs());
+AppWrapper::getInstance($app);
 
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write('Hello pidar');
