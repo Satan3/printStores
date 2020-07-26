@@ -25,22 +25,33 @@ class Category extends BaseEntity {
      */
     private $name;
 
-    public function getId() {
+    /**
+     * @ORM\OneToOne(targetEntity="File", mappedBy="entityId")
+     */
+    private $file;
+
+    public function getId(): int {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName(): string {
         return $this->name;
     }
 
-    public function setName($name) {
+    public function setName($name): self {
         $this->name = $name;
+        return $this;
+    }
+
+    public function getFile(): File {
+        return $this->file;
     }
 
     public function toArray(): array {
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
+            'file' => $this->getFile()->getPath(),
         ];
     }
 }
