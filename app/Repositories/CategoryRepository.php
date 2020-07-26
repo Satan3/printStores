@@ -14,9 +14,9 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
         parent::__construct($em, $class);
     }
 
-    public function create(BaseDTO $dto) {
+    public function create(array $params) {
          $category = new Category();
-         $category->setName($dto->get('name'));
+         $category->setName($params['name']);
          $this->_em->persist($category);
          $this->_em->flush();
          return $category;

@@ -8,7 +8,7 @@ interface RepositoryInterface {
 
     public function getList();
 
-    public function create(BaseDTO $dto);
+    public function create(array $params);
 
     public function update();
 
