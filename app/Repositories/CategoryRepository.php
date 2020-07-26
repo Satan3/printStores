@@ -2,13 +2,17 @@
 
 namespace App\Repositories;
 
-use App\DTO\BaseDTO;
 use App\Entities\Category;
+use App\Entities\File;
+use App\Managers\FileManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 
 class CategoryRepository extends EntityRepository implements  RepositoryInterface {
+
+    protected $container;
+    protected $path = 'categories';
 
     public function __construct(EntityManagerInterface $em, Mapping\ClassMetadata $class) {
         parent::__construct($em, $class);
@@ -16,7 +20,10 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
 
     public function create(array $params) {
          $category = new Category();
+         $fileManager = new FileManager($this->path, $this->_em->getRepository(File::class));
+         $file = $fileManager->save($params['image']);
          $category->setName($params['name']);
+         $category->setFile($file);
          $this->_em->persist($category);
          $this->_em->flush();
          return $category;
