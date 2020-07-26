@@ -5,6 +5,7 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Handlers\Strategies\RequestResponseArgs;
 
 require_once __DIR__ . '/bootstrap.php';
 
@@ -13,6 +14,8 @@ $containerBuilder->addDefinitions(require_once './di-config.php');
 $container = $containerBuilder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
+$routeCollector = $app->getRouteCollector();
+$routeCollector->setDefaultInvocationStrategy(new RequestResponseArgs());
 
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write('Hello pidar');
