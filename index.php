@@ -19,8 +19,13 @@ $routeCollector = $app->getRouteCollector();
 $routeCollector->setDefaultInvocationStrategy(new RequestResponseArgs());
 AppWrapper::getInstance($app);
 
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write('Hello pidar');
+$app->get('/', function (Request $request, Response $response) {
+    $form = '<form action="/categories/create" method="post" enctype="multipart/form-data">
+        <input type="text" name="name">
+        <input type="file" name="image">
+        <button type="submit">Отправить</button>
+    </form>';
+    $response->getBody()->write($form);
     return $response;
 });
 
