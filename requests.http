@@ -10,9 +10,8 @@ Cache-Control: no-cache
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="first"; filename="input.txt"
-< ./index.php
 
-{"name":"test"}
+Content-Disposition: form-data; name="image"; filename="input.txt"
+< ./index.php
 
 ### Удаление категории
