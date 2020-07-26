@@ -5,6 +5,10 @@ namespace App\Wrappers;
 class RequestWrapper extends BaseWrapper {
 
     public function getBody() {
-        return json_decode($this->getEntity()->getBody()->getContents(), true) ?? [];
+        return $this->getEntity()->getParsedBody();
+    }
+
+    public function getValidatedData() {
+        return array_merge($this->getBody(), $this->getEntity()->getUploadedFiles());
     }
 }
