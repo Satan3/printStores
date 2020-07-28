@@ -26,8 +26,8 @@ class Category extends BaseEntity {
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\OneToOne(targetEntity="File", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="File")
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
      */
     private $file;
 
