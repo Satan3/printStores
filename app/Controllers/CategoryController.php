@@ -3,13 +3,13 @@
 namespace App\Controllers;
 
 use App\Entities\Category;
+use App\Wrappers\AppWrapper;
 use App\Wrappers\RequestWrapper;
 use App\Wrappers\ResponseWrapper;
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Rakit\Validation\Validator;
 
 class CategoryController extends BaseController {
     protected $categoryRepository;
@@ -30,7 +30,7 @@ class CategoryController extends BaseController {
     public function create(ServerRequestInterface $request, ResponseInterface $response) {
         $request = new RequestWrapper($request);
         $response = new ResponseWrapper($response);
-        $validator = new Validator();
+        $validator = AppWrapper::getInstance()->getContainer()->get('validator');
         $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
             'name' => 'required',
             'image' => 'required|uploaded_file',
