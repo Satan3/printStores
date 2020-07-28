@@ -2,6 +2,8 @@
 
 namespace App\Wrappers;
 
+use Slim\App;
+
 class AppWrapper {
     private static $app;
 
@@ -9,10 +11,10 @@ class AppWrapper {
 
     }
 
-    public static function getInstance($app = null) {
+    public static function getInstance($app = null): App {
         if (!self::$app) {
             if (!$app) {
-                throw new \Exception('App instance is required!');
+                die('App instance is required!');
             }
             self::$app = $app;
         }
