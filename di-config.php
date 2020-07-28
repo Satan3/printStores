@@ -18,5 +18,6 @@ $connection = [
 return [
     EntityManager::class => function (ContainerInterface $container) use ($connection, $config) {
         return EntityManager::create($connection, $config);
-    }
+    },
+    'validator' => DI\get('\Rakit\Validation\Validator'),
 ];
