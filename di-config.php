@@ -1,5 +1,6 @@
 <?php
 
+use App\Entities\File;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Psr\Container\ContainerInterface;
@@ -20,4 +21,8 @@ return [
         return EntityManager::create($connection, $config);
     },
     'validator' => DI\get('\Rakit\Validation\Validator'),
+    'baseDir' => __DIR__,
+    'fileRepository' => function(ContainerInterface $container) {
+        return $container->get(EntityManager::class)->getRepository(File::class);
+    },
 ];
