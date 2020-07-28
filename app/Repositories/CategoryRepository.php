@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Entities\Category;
-use App\Entities\File;
 use App\Managers\FileManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -20,7 +19,7 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
 
     public function create(array $params) {
          $category = new Category();
-         $fileManager = new FileManager($this->path, $this->_em->getRepository(File::class));
+         $fileManager = new FileManager($this->path);
          $file = $fileManager->save($params['image']);
          $category->setName($params['name']);
          $category->setFile($file);
