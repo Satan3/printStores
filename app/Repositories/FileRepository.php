@@ -23,7 +23,7 @@ class FileRepository extends EntityRepository implements RepositoryInterface {
         // TODO: Implement update() method.
     }
 
-    public function delete() {
+    public function delete(int $id) {
         // TODO: Implement delete() method.
     }
 }

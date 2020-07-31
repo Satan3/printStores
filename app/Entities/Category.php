@@ -26,8 +26,8 @@ class Category extends BaseEntity {
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="File")
-     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="File", cascade={"remove"})
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id", )
      */
     private $file;
 

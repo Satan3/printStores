@@ -38,4 +38,9 @@ class FileManager {
         $uploadedFile->moveTo(realpath($baseDir) . $filePath);
         return $filePath;
     }
+
+    public function delete(string $path) {
+        $baseDir = AppWrapper::getInstance()->getContainer()->get('baseDir');
+        return unlink(realpath($baseDir) . $path);
+    }
 }

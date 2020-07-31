@@ -15,6 +15,7 @@ $containerBuilder->addDefinitions(require_once './di-config.php');
 $container = $containerBuilder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
+$app->addBodyParsingMiddleware();
 $routeCollector = $app->getRouteCollector();
 $routeCollector->setDefaultInvocationStrategy(new RequestResponseArgs());
 AppWrapper::getInstance($app);
@@ -31,5 +32,6 @@ $app->get('/', function (Request $request, Response $response) {
 
 $app->get('/categories', CategoryController::class . ':index');
 $app->post('/categories/create', CategoryController::class . ':create');
+$app->delete('/categories/delete/{id}', CategoryController::class . ':delete');
 
 $app->run();

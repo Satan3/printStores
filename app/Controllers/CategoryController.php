@@ -40,4 +40,11 @@ class CategoryController extends BaseController {
         }
         return $response->toJson($this->categoryRepository->create(array_merge($request->getValidatedData()))->toArray());
     }
+
+    public function delete(ServerRequestInterface $request, ResponseInterface $response, $id) {
+        $response = new ResponseWrapper($response);
+        return $response->toJson([
+            'success' => $this->categoryRepository->delete($id),
+        ]);
+    }
 }

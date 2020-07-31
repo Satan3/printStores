@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping;
 class CategoryRepository extends EntityRepository implements  RepositoryInterface {
 
     protected $container;
+    protected $entityName = 'Category';
     protected $path = 'categories';
 
     public function __construct(EntityManagerInterface $em, Mapping\ClassMetadata $class) {
@@ -36,7 +37,18 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
         // TODO: Implement update() method.
     }
 
-    public function delete() {
-        // TODO: Implement delete() method.
+    public function delete(int $id) {
+        /** @var Category $category */
+        $category = $this->_em->find(Category::class, $id);
+        if (!$category) {
+            return false;
+        }
+        $fileManager = new FileManager($this->path);
+        if (!$fileManager->delete($category->getFile()->getPath())) {
+            return false;
+        }
+        $this->_em->remove($category);
+        $this->_em->flush();
+        return true;
     }
 }

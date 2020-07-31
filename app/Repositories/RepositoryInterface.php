@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use App\DTO\BaseDTO;
-
 interface RepositoryInterface {
 
     public function getList();
@@ -12,6 +10,6 @@ interface RepositoryInterface {
 
     public function update();
 
-    public function delete();
+    public function delete(int $id);
 
 }
