@@ -19,7 +19,7 @@ class FileRepository extends EntityRepository implements RepositoryInterface {
         return $file;
     }
 
-    public function update() {
+    public function update(array $params) {
         // TODO: Implement update() method.
     }
 

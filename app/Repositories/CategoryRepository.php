@@ -11,17 +11,22 @@ use Doctrine\ORM\Mapping;
 class CategoryRepository extends EntityRepository implements  RepositoryInterface {
 
     protected $container;
-    protected $entityName = 'Category';
+    protected $entityClassName = Category::class;
     protected $path = 'categories';
+    protected $fileManager;
 
     public function __construct(EntityManagerInterface $em, Mapping\ClassMetadata $class) {
         parent::__construct($em, $class);
+        $this->fileManager = new FileManager($this->path);
+    }
+
+    public function getList() {
+        return $this->findAll();
     }
 
     public function create(array $params) {
          $category = new Category();
-         $fileManager = new FileManager($this->path);
-         $file = $fileManager->save($params['image']);
+         $file = $this->fileManager->save($params['image']);
          $category->setName($params['name']);
          $category->setFile($file);
          $this->_em->persist($category);
@@ -29,22 +34,29 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
          return $category;
     }
 
-    public function getList() {
-        return $this->findAll();
-    }
-
-    public function update() {
-        // TODO: Implement update() method.
+    public function update(array $params) {
+        /** @var Category $category */
+       if (!$category = $this->_em->find($this->entityClassName, $params['id'])) {
+           return false;
+       }
+       $category->setName($params['name']);
+       $prefFile = $category->getFile();
+       if ($params['image']) {
+           $newFile = $this->fileManager->replace($category->getFile(), $params['image']);
+           $category->setFile($newFile);
+           $this->_em->remove($prefFile);
+       }
+       $this->_em->persist($category);
+       $this->_em->flush();
+       return $category;
     }
 
     public function delete(int $id) {
         /** @var Category $category */
-        $category = $this->_em->find(Category::class, $id);
-        if (!$category) {
+        if (!$category = $this->_em->find($this->entityClassName, $id)) {
             return false;
         }
-        $fileManager = new FileManager($this->path);
-        if (!$fileManager->delete($category->getFile()->getPath())) {
+        if (!$this->fileManager->delete($category->getFile()->getPath())) {
             return false;
         }
         $this->_em->remove($category);

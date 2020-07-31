@@ -36,9 +36,24 @@ class CategoryController extends BaseController {
             'image' => 'required|uploaded_file',
         ]);
         if ($validation->fails()) {
-            return $response->toJson($validation->errors());
+            return $response->toJson($validation->errors()->all());
         }
         return $response->toJson($this->categoryRepository->create(array_merge($request->getValidatedData()))->toArray());
+    }
+
+    public function update(ServerRequestInterface $request, ResponseInterface $response) {
+        $request = new RequestWrapper($request);
+        $response = new ResponseWrapper($response);
+        $validator = AppWrapper::getInstance()->getContainer()->get('validator');
+        $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
+            'id' => 'required',
+            'name' => 'required',
+            'image' => 'uploaded_file',
+        ]);
+        if ($validation->fails()) {
+            return $response->toJson($validation->errors()->all());
+        }
+        return $response->toJson($this->categoryRepository->update(array_merge($request->getValidatedData()))->toArray());
     }
 
     public function delete(ServerRequestInterface $request, ResponseInterface $response, $id) {

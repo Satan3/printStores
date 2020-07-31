@@ -2,6 +2,7 @@
 
 namespace App\Managers;
 
+use App\Entities\File;
 use App\Wrappers\AppWrapper;
 use Psr\Http\Message\UploadedFileInterface;
 
@@ -22,6 +23,16 @@ class FileManager {
         return null;
     }
 
+    public function delete(string $path) {
+        $baseDir = AppWrapper::getInstance()->getContainer()->get('baseDir');
+        return unlink(realpath($baseDir) . $path);
+    }
+
+    public function replace(File $oldFile, UploadedFileInterface $newFile) {
+        $this->delete($oldFile->getPath());
+        return $this->save($newFile);
+    }
+
     private function moveUploadedFile(UploadedFileInterface $uploadedFile) {
         $baseDir = AppWrapper::getInstance()->getContainer()->get('baseDir');
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
@@ -37,10 +48,5 @@ class FileManager {
         );
         $uploadedFile->moveTo(realpath($baseDir) . $filePath);
         return $filePath;
-    }
-
-    public function delete(string $path) {
-        $baseDir = AppWrapper::getInstance()->getContainer()->get('baseDir');
-        return unlink(realpath($baseDir) . $path);
     }
 }

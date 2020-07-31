@@ -8,7 +8,7 @@ interface RepositoryInterface {
 
     public function create(array $params);
 
-    public function update();
+    public function update(array $params);
 
     public function delete(int $id);
 

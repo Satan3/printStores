@@ -32,6 +32,7 @@ $app->get('/', function (Request $request, Response $response) {
 
 $app->get('/categories', CategoryController::class . ':index');
 $app->post('/categories/create', CategoryController::class . ':create');
+$app->post('/categories/update', CategoryController::class . ':update');
 $app->delete('/categories/delete/{id}', CategoryController::class . ':delete');
 
 $app->run();
