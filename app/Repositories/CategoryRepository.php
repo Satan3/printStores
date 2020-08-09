@@ -63,4 +63,12 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
         $this->_em->flush();
         return true;
     }
+
+    public function getProducts(int $id) {
+        /** @var Category $category */
+        if ($category = $this->_em->find($this->entityClassName, $id)) {
+            return false;
+        }
+        return $category->getProducts();
+    }
 }
