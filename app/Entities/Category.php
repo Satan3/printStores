@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,9 +28,18 @@ class Category extends BaseEntity {
 
     /**
      * @ORM\OneToOne(targetEntity="File", cascade={"remove"})
-     * @ORM\JoinColumn(name="file_id", referencedColumnName="id", )
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
      */
     private $file;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     */
+    private $products;
+
+    public function __construct() {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): int {
         return $this->id;
@@ -51,6 +61,14 @@ class Category extends BaseEntity {
     public function setFile(File $file): self {
         $this->file = $file;
         return $this;
+    }
+
+    public function getProducts(): ArrayCollection {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product) {
+        $this->products[] = $product;
     }
 
     public function toArray(): array {
