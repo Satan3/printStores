@@ -66,8 +66,8 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
 
     public function getProducts(int $id) {
         /** @var Category $category */
-        if ($category = $this->_em->find($this->entityClassName, $id)) {
-            return false;
+        if (!$category = $this->_em->find($this->entityClassName, $id)) {
+           return [];
         }
         return $category->getProducts();
     }

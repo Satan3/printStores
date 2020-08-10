@@ -18,7 +18,7 @@ class ProductController extends BaseController {
         $this->productRepository = $entityManager->getRepository(Product::class);
     }
 
-    public function index(ServerRequestInterface $request, ResponseInterface $response, int $categoryId) {
+    public function index(ServerRequestInterface $request, ResponseInterface $response, string $categoryId) {
         $response = new ResponseWrapper($response);
         $categoryRepository = $this->entityManager->getRepository(Category::class);
         return $response->toJson($this->toArray($categoryRepository->getProducts($categoryId)));
