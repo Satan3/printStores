@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\CategoryController;
+use App\Controllers\ProductController;
 use App\Wrappers\AppWrapper;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
@@ -34,5 +35,6 @@ $app->get('/categories', CategoryController::class . ':index');
 $app->post('/categories/create', CategoryController::class . ':create');
 $app->post('/categories/update', CategoryController::class . ':update');
 $app->delete('/categories/delete/{id}', CategoryController::class . ':delete');
+$app->get('/category/{id}/products', ProductController::class . ':index');
 
 $app->run();
