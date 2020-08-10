@@ -15,10 +15,13 @@ abstract class BaseController {
         $this->entityManager = $entityManager;
     }
 
-    public function toArray(array $items) {
+    public function toArray($items) {
         $fGetList = function (BaseEntity $item) {
             return $item->toArray();
         };
+        if (!is_array($items)) {
+            $items = $items->toArray();
+        }
         return array_map($fGetList, $items);
     }
 }
