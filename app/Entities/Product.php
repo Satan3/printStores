@@ -33,7 +33,8 @@ class Product extends BaseEntity {
 
     /**
      * @var Category $category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="products" cascade={"null"})
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="products")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $category;
 
