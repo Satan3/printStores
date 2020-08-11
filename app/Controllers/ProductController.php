@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Entities\Category;
 use App\Entities\Product;
+use App\Wrappers\AppWrapper;
+use App\Wrappers\RequestWrapper;
 use App\Wrappers\ResponseWrapper;
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
@@ -22,5 +24,23 @@ class ProductController extends BaseController {
         $response = new ResponseWrapper($response);
         $categoryRepository = $this->entityManager->getRepository(Category::class);
         return $response->toJson($this->toArray($categoryRepository->getProducts($categoryId)));
+    }
+
+    public function create(ServerRequestInterface $request, ResponseInterface $response) {
+        $request = new RequestWrapper($request);
+        $response = new ResponseWrapper($response);
+        $validator = AppWrapper::getInstance()->getContainer()->get('validator');
+        $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
+            'name' => 'required',
+            'image' => 'required|uploaded_file',
+            'price' => 'required',
+            'discount' => 'default:0',
+            'stock' => 'default:""',
+            'category_id' => 'integer|required',
+        ]);
+        if ($validation->fails()) {
+            return $response->toJson($validation->errors()->all());
+        }
+        return $response->toJson($this->productRepository->create($request->getValidatedData())->toArray());
     }
 }
