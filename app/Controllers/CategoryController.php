@@ -35,7 +35,7 @@ class CategoryController extends BaseController {
         if ($validation->fails()) {
             return $response->toJson($validation->errors()->all());
         }
-        return $response->toJson($this->categoryRepository->create(array_merge($request->getValidatedData()))->toArray());
+        return $response->toJson($this->categoryRepository->create($request->getValidatedData())->toArray());
     }
 
     public function update(ServerRequestInterface $request, ResponseInterface $response) {
