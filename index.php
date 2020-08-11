@@ -22,9 +22,13 @@ $routeCollector->setDefaultInvocationStrategy(new RequestResponseArgs());
 AppWrapper::getInstance($app);
 
 $app->get('/', function (Request $request, Response $response) {
-    $form = '<form action="/categories/create" method="post" enctype="multipart/form-data">
-        <input type="text" name="name">
-        <input type="file" name="image">
+    $form = '<form action="/products/create" method="post" enctype="multipart/form-data">
+        Название<input type="text" name="name">
+        Категория(id)<input type="text" name="category_id">
+        Цена<input type="text" name="price">
+        Скидка(%)<input type="text" name="discount">
+        Название метки(акции)<input type="text" name="stock">
+        Изображение<input type="file" name="image">
         <button type="submit">Отправить</button>
     </form>';
     $response->getBody()->write($form);
@@ -36,5 +40,6 @@ $app->post('/categories/create', CategoryController::class . ':create');
 $app->post('/categories/update', CategoryController::class . ':update');
 $app->delete('/categories/delete/{id}', CategoryController::class . ':delete');
 $app->get('/category/{id}/products', ProductController::class . ':index');
+$app->post('/products/create',  ProductController::class . ':create');
 
 $app->run();
