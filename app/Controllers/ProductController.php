@@ -27,20 +27,24 @@ class ProductController extends BaseController {
     }
 
     public function create(ServerRequestInterface $request, ResponseInterface $response) {
-        $request = new RequestWrapper($request);
-        $response = new ResponseWrapper($response);
-        $validator = AppWrapper::getInstance()->getContainer()->get('validator');
-        $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
-            'name' => 'required',
-            'image' => 'required|uploaded_file',
-            'price' => 'required',
-            'discount' => 'default:0',
-            'stock' => 'default:""',
-            'category_id' => 'integer|required',
-        ]);
-        if ($validation->fails()) {
-            return $response->toJson($validation->errors()->all());
+        try {
+            $request = new RequestWrapper($request);
+            $response = new ResponseWrapper($response);
+            $validator = AppWrapper::getInstance()->getContainer()->get('validator');
+            $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
+                'name' => 'required',
+                'image' => 'required|uploaded_file',
+                'price' => 'required',
+                'discount' => 'default:0',
+                'stock' => 'default:""',
+                'category_id' => 'integer|required',
+            ]);
+            if ($validation->fails()) {
+                return $response->toJson($validation->errors()->all());
+            }
+            return $response->toJson($this->productRepository->create($request->getValidatedData())->toArray());
+        } catch (\Exception $e) {
+            return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
         }
-        return $response->toJson($this->productRepository->create($request->getValidatedData())->toArray());
     }
 }
