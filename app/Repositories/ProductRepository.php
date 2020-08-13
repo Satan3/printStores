@@ -30,9 +30,7 @@ class ProductRepository extends EntityRepository implements RepositoryInterface 
         $file = $this->fileManager->save($params['image']);
         /** @var Category $category */
         if (!$category = $this->_em->getRepository(Category::class)->find($params['category_id'])) {
-            return [
-                'Указанной категории не существует'
-            ];
+            throw new \Exception('Указанной категории не существует');
         }
         $product
             ->setName($params['name'])
