@@ -37,7 +37,7 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
     public function update(array $params) {
         /** @var Category $category */
        if (!$category = $this->_em->find($this->entityClassName, $params['id'])) {
-           return false;
+           throw new \Exception('Отсутствует указанная категория');
        }
        $category->setName($params['name']);
        $prefFile = $category->getFile();
@@ -54,14 +54,11 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
     public function delete(int $id) {
         /** @var Category $category */
         if (!$category = $this->_em->find($this->entityClassName, $id)) {
-            return false;
+            throw new \Exception('Не найдена указанная категория');
         }
-        if (!$this->fileManager->delete($category->getFile()->getPath())) {
-            return false;
-        }
+        $this->fileManager->delete($category->getFile()->getPath());
         $this->_em->remove($category);
         $this->_em->flush();
-        return true;
     }
 
     public function getProducts(int $id) {
