@@ -27,13 +27,13 @@ class Product extends BaseEntity {
 
     /**
      * @ORM\OneToOne(targetEntity="File", cascade={"remove"})
-     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="file_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $file;
 
     /**
      * @var Category $category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $category;
