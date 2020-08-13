@@ -39,24 +39,31 @@ class CategoryController extends BaseController {
     }
 
     public function update(ServerRequestInterface $request, ResponseInterface $response) {
-        $request = new RequestWrapper($request);
-        $response = new ResponseWrapper($response);
-        $validator = AppWrapper::getInstance()->getContainer()->get('validator');
-        $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
-            'id' => 'required',
-            'name' => 'required',
-            'image' => 'uploaded_file',
-        ]);
-        if ($validation->fails()) {
-            return $response->toJson($validation->errors()->all());
+        try {
+            $request = new RequestWrapper($request);
+            $response = new ResponseWrapper($response);
+            $validator = AppWrapper::getInstance()->getContainer()->get('validator');
+            $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
+                'id' => 'required',
+                'name' => 'required',
+                'image' => 'uploaded_file',
+            ]);
+            if ($validation->fails()) {
+                return $response->toJson($validation->errors()->all());
+            }
+            return $response->toJson($this->categoryRepository->update(array_merge($request->getValidatedData()))->toArray());
+        } catch (\Exception $e) {
+            return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
         }
-        return $response->toJson($this->categoryRepository->update(array_merge($request->getValidatedData()))->toArray());
     }
 
     public function delete(ServerRequestInterface $request, ResponseInterface $response, $id) {
-        $response = new ResponseWrapper($response);
-        return $response->toJson([
-            'success' => $this->categoryRepository->delete($id),
-        ]);
+        try {
+            $response = new ResponseWrapper($response);
+            $this->categoryRepository->delete($id);
+            return $response->toJson(['success' => true]);
+        } catch (\Exception $e) {
+            return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 }
