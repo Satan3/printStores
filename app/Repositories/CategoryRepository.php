@@ -40,11 +40,11 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
            throw new \Exception('Отсутствует указанная категория');
        }
        $category->setName($params['name']);
-       $prefFile = $category->getFile();
        if ($params['image']) {
-           $newFile = $this->fileManager->replace($category->getFile(), $params['image']);
+           $prevFile = $category->getFile();
+           $newFile = $this->fileManager->replace($prevFile, $params['image']);
            $category->setFile($newFile);
-           $this->_em->remove($prefFile);
+           $this->_em->remove($prevFile);
        }
        $this->_em->persist($category);
        $this->_em->flush();
