@@ -40,9 +40,31 @@ class ProductController extends BaseController {
                 'category_id' => 'integer|required',
             ]);
             if ($validation->fails()) {
-                return $response->toJson($validation->errors()->all());
+                throw new \Exception(json_encode($validation->errors()->toArray()));
             }
             return $response->toJson($this->productRepository->create($request->getValidatedData())->toArray());
+        } catch (\Exception $e) {
+            return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function update(ServerRequestInterface $request, ResponseInterface $response) {
+        try {
+            $request = new RequestWrapper($request);
+            $response = new ResponseWrapper($response);
+            $validator = AppWrapper::getInstance()->getContainer()->get('validator');
+            $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
+               'name' => 'required',
+               'image' => 'uploaded_file',
+               'price' => 'required',
+               'discount' => 'default:0',
+               'stock' => 'default:""',
+               'category_id' => 'integer|required',
+            ]);
+            if ($validation->fails()) {
+                throw new \Exception(json_encode($validation->errors()->toArray()));
+            }
+            return $response->toJson($this->productRepository->update($request->getValidatedData())->toArray());
         } catch (\Exception $e) {
             return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
         }
