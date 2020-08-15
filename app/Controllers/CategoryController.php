@@ -25,17 +25,21 @@ class CategoryController extends BaseController {
     }
 
     public function create(ServerRequestInterface $request, ResponseInterface $response) {
-        $request = new RequestWrapper($request);
-        $response = new ResponseWrapper($response);
-        $validator = AppWrapper::getInstance()->getContainer()->get('validator');
-        $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
-            'name' => 'required',
-            'image' => 'required|uploaded_file',
-        ]);
-        if ($validation->fails()) {
-            return $response->toJson($validation->errors()->all());
+        try {
+            $request = new RequestWrapper($request);
+            $response = new ResponseWrapper($response);
+            $validator = AppWrapper::getInstance()->getContainer()->get('validator');
+            $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
+                'name' => 'required',
+                'image' => 'required|uploaded_file',
+            ]);
+            if ($validation->fails()) {
+                throw new \Exception(json_encode($validation->errors()->toArray()));
+            }
+            return $response->toJson($this->categoryRepository->create($request->getValidatedData())->toArray());
+        } catch (\Exception $e) {
+            return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
         }
-        return $response->toJson($this->categoryRepository->create($request->getValidatedData())->toArray());
     }
 
     public function update(ServerRequestInterface $request, ResponseInterface $response) {
@@ -49,7 +53,7 @@ class CategoryController extends BaseController {
                 'image' => 'uploaded_file',
             ]);
             if ($validation->fails()) {
-                return $response->toJson($validation->errors()->all());
+                throw new \Exception(json_encode($validation->errors()->toArray()));
             }
             return $response->toJson($this->categoryRepository->update(array_merge($request->getValidatedData()))->toArray());
         } catch (\Exception $e) {
