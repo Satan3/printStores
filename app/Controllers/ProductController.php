@@ -69,4 +69,15 @@ class ProductController extends BaseController {
             return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+
+    public function delete(ServerRequestInterface $request, ResponseInterface $response, $id) {
+        try {
+            $response = new ResponseWrapper($response);
+            $this->productRepository->delete($id);
+            return $response->toJson(['success' => true]);
+        } catch (\Exception $e) {
+            return $response->toJson(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
 }

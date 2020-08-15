@@ -46,10 +46,9 @@ class ProductRepository extends EntityRepository implements RepositoryInterface 
     }
 
     public function update(array $params) {
-        $productRepository = $this->_em->getRepository($this->entityClassName);
         $categoryRepository = $this->_em->getRepository(Category::class);
         /** @var Product $product */
-        if (!$product = $productRepository->find($params['id'])) {
+        if (!$product = $this->_em->find($this->entityClassName, $params['id'])) {
             throw new \Exception('Указанного товара не существует');
         }
         if ($categoryId = $params['category_id']) {
@@ -77,6 +76,13 @@ class ProductRepository extends EntityRepository implements RepositoryInterface 
     }
 
     public function delete(int $id) {
-        // TODO: Implement delete() method.
+        /** @var Product $product */
+       if (!$product = $this->_em->find($this->entityClassName, $id)) {
+           throw new \Exception('Указанного товара не существует');
+       }
+       $this->fileManager->delete($product->getFile()->getPath());
+       $this->_em->remove($product);
+       $this->_em->flush();
     }
+
 }

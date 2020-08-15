@@ -43,5 +43,6 @@ $app->delete('/categories/delete/{id}', CategoryController::class . ':delete');
 $app->get('/categories/{id}/products', ProductController::class . ':index');
 $app->post('/products/create',  ProductController::class . ':create');
 $app->post('/products/update', ProductController::class . ':update');
+$app->delete('/products/delete/{id}', ProductController::class . ':delete');
 
 $app->run();
