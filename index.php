@@ -1,7 +1,6 @@
 <?php
 
-use App\Controllers\CategoryController;
-use App\Controllers\ProductController;
+use App\Controllers\{CategoryController, ProductController, ReviewController};
 use App\Wrappers\AppWrapper;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
@@ -22,14 +21,10 @@ $routeCollector->setDefaultInvocationStrategy(new RequestResponseArgs());
 AppWrapper::getInstance($app);
 
 $app->get('/', function (Request $request, Response $response) {
-    $form = '<form action="/products/update" method="post" enctype="multipart/form-data">
-        Название<input type="text" name="name">
-        Категория(id)<input type="text" name="category_id">
-        Цена<input type="text" name="price">
-        Скидка(%)<input type="text" name="discount">
-        Название метки(акции)<input type="text" name="stock">
-        Изображение<input type="file" name="image">
-        <input type="hidden" name="id" value="10">
+    $form = '<form action="/reviews/create" method="post" enctype="multipart/form-data">
+        Имя<input type="text" name="personName">
+        Оценка: <input type="number" name="rating">
+        Сообщение: <input type="text" name="message">
         <button type="submit">Отправить</button>
     </form>';
     $response->getBody()->write($form);
@@ -41,8 +36,10 @@ $app->post('/categories/create', CategoryController::class . ':create');
 $app->post('/categories/update', CategoryController::class . ':update');
 $app->delete('/categories/delete/{id}', CategoryController::class . ':delete');
 $app->get('/categories/{id}/products', ProductController::class . ':index');
-$app->post('/products/create',  ProductController::class . ':create');
+$app->post('/products/create', ProductController::class . ':create');
 $app->post('/products/update', ProductController::class . ':update');
 $app->delete('/products/delete/{id}', ProductController::class . ':delete');
+$app->get('/reviews', ReviewController::class . ':index');
+$app->post('/reviews/create', ReviewController::class . ':create');
 
 $app->run();

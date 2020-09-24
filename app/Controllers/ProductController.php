@@ -13,6 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ProductController extends BaseController {
+
     protected $productRepository;
 
     public function __construct(ContainerInterface $container, EntityManager $entityManager) {
