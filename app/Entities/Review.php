@@ -89,7 +89,7 @@ class Review extends BaseEntity {
             'personName' => $this->getPersonName(),
             'message' => $this->getMessage(),
             'rating' => $this->getRating(),
-            'date' => $this->getCreatedAt()->format('Y-m-d H:m:s'),
+            'date' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
         ];
     }
 }
