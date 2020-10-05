@@ -2,7 +2,7 @@
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Setup;
 
-require_once __DIR__ . '\bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 
 $isDevMode = $_ENV['DEV_MODE'];
 $baseDir = __DIR__ . sprintf('\%s', $_ENV['BASE_DIR']);
