@@ -20,26 +20,25 @@ $routeCollector = $app->getRouteCollector();
 $routeCollector->setDefaultInvocationStrategy(new RequestResponseArgs());
 AppWrapper::getInstance($app);
 
-$app->get('/', function (Request $request, Response $response) {
-    $form = '<form action="/reviews/create" method="post" enctype="multipart/form-data">
-        Имя<input type="text" name="personName">
-        Оценка: <input type="number" name="rating">
-        Сообщение: <input type="text" name="message">
+$app->get('/api', function (Request $request, Response $response) {
+    $form = '<form action="/api/categories/create" method="post" enctype="multipart/form-data">
+        Имя<input type="text" name="name">
+        <input type="file" name="image">
         <button type="submit">Отправить</button>
     </form>';
     $response->getBody()->write($form);
     return $response;
 });
 
-$app->get('/categories', CategoryController::class . ':index');
-$app->post('/categories/create', CategoryController::class . ':create');
-$app->post('/categories/update', CategoryController::class . ':update');
-$app->delete('/categories/delete/{id}', CategoryController::class . ':delete');
-$app->get('/categories/{id}/products', ProductController::class . ':index');
-$app->post('/products/create', ProductController::class . ':create');
-$app->post('/products/update', ProductController::class . ':update');
-$app->delete('/products/delete/{id}', ProductController::class . ':delete');
-$app->get('/reviews', ReviewController::class . ':index');
-$app->post('/reviews/create', ReviewController::class . ':create');
+$app->get('/api/categories', CategoryController::class . ':index');
+$app->post('/api/categories/create', CategoryController::class . ':create');
+$app->post('/api/categories/update', CategoryController::class . ':update');
+$app->delete('/api/categories/delete/{id}', CategoryController::class . ':delete');
+$app->get('/api/categories/{id}/products', ProductController::class . ':index');
+$app->post('/api/products/create', ProductController::class . ':create');
+$app->post('/api/products/update', ProductController::class . ':update');
+$app->delete('/api/products/delete/{id}', ProductController::class . ':delete');
+$app->get('/api/reviews', ReviewController::class . ':index');
+$app->post('/api/reviews/create', ReviewController::class . ':create');
 
 $app->run();
