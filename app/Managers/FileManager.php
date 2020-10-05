@@ -7,6 +7,7 @@ use App\Wrappers\AppWrapper;
 use Psr\Http\Message\UploadedFileInterface;
 
 class FileManager {
+    const API_DIR = '\\api';
     private $directory;
     private $fileRepository;
 
@@ -47,6 +48,6 @@ class FileManager {
             $fileName
         );
         $uploadedFile->moveTo(realpath($baseDir) . $filePath);
-        return $filePath;
+        return sprintf('%s%s', self::API_DIR, $filePath);
     }
 }
