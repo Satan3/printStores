@@ -27,6 +27,12 @@ class ProductController extends BaseController {
         return $response->toJson($this->toArray($categoryRepository->getProducts($categoryId)));
     }
 
+    public function all(ServerRequestInterface $request, ResponseInterface $response) {
+        $response = new ResponseWrapper($response);
+        $products = $this->productRepository->findAll();
+        return $response->toJson($this->toArray($products));
+    }
+
     public function create(ServerRequestInterface $request, ResponseInterface $response) {
         try {
             $request = new RequestWrapper($request);
@@ -55,12 +61,12 @@ class ProductController extends BaseController {
             $response = new ResponseWrapper($response);
             $validator = AppWrapper::getInstance()->getContainer()->get('validator');
             $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
-               'name' => 'required',
-               'image' => 'uploaded_file',
-               'price' => 'required',
-               'discount' => 'default:0',
-               'stock' => 'default:""',
-               'category_id' => 'integer|required',
+                'name' => 'required',
+                'image' => 'uploaded_file',
+                'price' => 'required',
+                'discount' => 'default:0',
+                'stock' => 'default:""',
+                'category_id' => 'integer|required',
             ]);
             if ($validation->fails()) {
                 throw new \Exception(json_encode($validation->errors()->toArray()));

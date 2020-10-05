@@ -35,6 +35,7 @@ $app->post('/api/categories/create', CategoryController::class . ':create');
 $app->post('/api/categories/update', CategoryController::class . ':update');
 $app->delete('/api/categories/delete/{id}', CategoryController::class . ':delete');
 $app->get('/api/categories/{id}/products', ProductController::class . ':index');
+$app->get('/api/products/all', ProductController::class . ':all');
 $app->post('/api/products/create', ProductController::class . ':create');
 $app->post('/api/products/update', ProductController::class . ':update');
 $app->delete('/api/products/delete/{id}', ProductController::class . ':delete');
