@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 
-class CategoryRepository extends EntityRepository implements  RepositoryInterface {
+class CategoryRepository extends EntityRepository implements RepositoryInterface {
 
     protected $container;
     protected $entityClassName = Category::class;
@@ -25,30 +25,48 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
     }
 
     public function create(array $params) {
-         $category = new Category();
-         $file = $this->fileManager->save($params['image']);
-         $category->setName($params['name']);
-         $category->setFile($file);
-         $this->_em->persist($category);
-         $this->_em->flush();
-         return $category;
+        $category = new Category();
+        $file = $this->fileManager->save($params['image']);
+        if ($title = $params['pageTitle']) {
+            $category->setPageTitle($title);
+        }
+        if ($description = $params['pageDescription']) {
+            $category->setPageDescription($description);
+        }
+        if ($keywords = $params['pageKeywords']) {
+            $category->setPageKeywords($keywords);
+        }
+        $category->setName($params['name']);
+        $category->setFile($file);
+        $this->_em->persist($category);
+        $this->_em->flush();
+        return $category;
     }
 
     public function update(array $params) {
         /** @var Category $category */
-       if (!$category = $this->_em->find($this->entityClassName, $params['id'])) {
-           throw new \Exception('Отсутствует указанная категория');
-       }
-       $category->setName($params['name']);
-       if ($params['image']) {
-           $prevFile = $category->getFile();
-           $newFile = $this->fileManager->replace($prevFile, $params['image']);
-           $category->setFile($newFile);
-           $this->_em->remove($prevFile);
-       }
-       $this->_em->persist($category);
-       $this->_em->flush();
-       return $category;
+        if (!$category = $this->_em->find($this->entityClassName, $params['id'])) {
+            throw new \Exception('Отсутствует указанная категория');
+        }
+        $category->setName($params['name']);
+        if ($params['image']) {
+            $prevFile = $category->getFile();
+            $newFile = $this->fileManager->replace($prevFile, $params['image']);
+            $category->setFile($newFile);
+            $this->_em->remove($prevFile);
+        }
+        if ($title = $params['pageTitle']) {
+            $category->setPageTitle($title);
+        }
+        if ($description = $params['pageDescription']) {
+            $category->setPageDescription($description);
+        }
+        if ($keywords = $params['pageKeywords']) {
+            $category->setPageKeywords($keywords);
+        }
+        $this->_em->persist($category);
+        $this->_em->flush();
+        return $category;
     }
 
     public function delete(int $id) {
@@ -64,7 +82,7 @@ class CategoryRepository extends EntityRepository implements  RepositoryInterfac
     public function getProducts(int $id) {
         /** @var Category $category */
         if (!$category = $this->_em->find($this->entityClassName, $id)) {
-           return [];
+            return [];
         }
         return $category->getProducts();
     }

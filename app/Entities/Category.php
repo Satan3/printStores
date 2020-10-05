@@ -39,6 +39,24 @@ class Category extends BaseEntity {
      */
     private $products;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $pageTitle;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $pageDescription;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $pageKeywords;
+
     public function __construct() {
         $this->products = new ArrayCollection();
     }
@@ -73,11 +91,41 @@ class Category extends BaseEntity {
         $this->products[] = $product;
     }
 
+    public function getPageTitle(): ?string {
+        return $this->pageTitle;
+    }
+
+    public function setPageTitle(string $title): self {
+        $this->pageTitle = $title;
+        return $this;
+    }
+
+    public function getPageDescription(): ?string {
+        return $this->pageDescription;
+    }
+
+    public function setPageDescription(string $description): self {
+        $this->pageDescription = $description;
+        return $this;
+    }
+
+    public function getPageKeywords(): ?string {
+        return $this->pageKeywords;
+    }
+
+    public function setPageKeywords(string $keywords): self {
+        $this->pageKeywords = $keywords;
+        return $this;
+    }
+
     public function toArray(): array {
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'file' => $this->getFile()->getPath(),
+            'pageTitle' => $this->getPageTitle(),
+            'pageDescription' => $this->getPageDescription(),
+            'pageKeywords' => $this->getPageKeywords(),
         ];
     }
 }

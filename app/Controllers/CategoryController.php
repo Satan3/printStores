@@ -32,6 +32,9 @@ class CategoryController extends BaseController {
             $validation = $validator->validate(array_merge($request->getBody(), $_FILES), [
                 'name' => 'required',
                 'image' => 'required|uploaded_file',
+                'pageTitle' => 'nullable',
+                'pageDescription' => 'nullable',
+                'pageKeywords' => 'nullable',
             ]);
             if ($validation->fails()) {
                 throw new \Exception(json_encode($validation->errors()->toArray()));
@@ -51,6 +54,9 @@ class CategoryController extends BaseController {
                 'id' => 'required',
                 'name' => 'required',
                 'image' => 'uploaded_file',
+                'pageTitle' => 'nullable',
+                'pageDescription' => 'nullable',
+                'pageKeywords' => 'nullable',
             ]);
             if ($validation->fails()) {
                 throw new \Exception(json_encode($validation->errors()->toArray()));
