@@ -53,6 +53,24 @@ class Product extends BaseEntity {
      */
     private $stock;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $pageTitle;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $pageDescription;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $pageKeywords;
+
     public function getId(): int {
         return $this->id;
     }
@@ -111,6 +129,33 @@ class Product extends BaseEntity {
         return $this;
     }
 
+    public function getPageTitle(): ?string {
+        return $this->pageTitle;
+    }
+
+    public function setPageTitle(string $title): self {
+        $this->pageTitle = $title;
+        return $this;
+    }
+
+    public function getPageDescription(): ?string {
+        return $this->pageDescription;
+    }
+
+    public function setPageDescription(string $description): self {
+        $this->pageDescription = $description;
+        return $this;
+    }
+
+    public function getPageKeywords(): ?string {
+        return $this->pageKeywords;
+    }
+
+    public function setPageKeywords(string $keywords): self {
+        $this->pageKeywords = $keywords;
+        return $this;
+    }
+
     public function toArray(): array {
         return [
             'id' => $this->getId(),
@@ -120,6 +165,9 @@ class Product extends BaseEntity {
             'price' => $this->getPrice(),
             'discount' => $this->getDiscount(),
             'stock' => $this->getStock(),
+            'pageTitle' => $this->getPageTitle(),
+            'pageDescription' => $this->getPageDescription(),
+            'pageKeywords' => $this->getPageKeywords(),
         ];
     }
 }

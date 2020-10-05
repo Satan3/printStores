@@ -45,6 +45,9 @@ class ProductController extends BaseController {
                 'discount' => 'default:0',
                 'stock' => 'default:""',
                 'category_id' => 'integer|required',
+                'pageTitle' => 'nullable',
+                'pageDescription' => 'nullable',
+                'pageKeywords' => 'nullable',
             ]);
             if ($validation->fails()) {
                 throw new \Exception(json_encode($validation->errors()->toArray()));
@@ -67,6 +70,9 @@ class ProductController extends BaseController {
                 'discount' => 'default:0',
                 'stock' => 'default:""',
                 'category_id' => 'integer|required',
+                'pageTitle' => 'nullable',
+                'pageDescription' => 'nullable',
+                'pageKeywords' => 'nullable',
             ]);
             if ($validation->fails()) {
                 throw new \Exception(json_encode($validation->errors()->toArray()));

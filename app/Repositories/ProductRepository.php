@@ -40,6 +40,15 @@ class ProductRepository extends EntityRepository implements RepositoryInterface 
             ->setPrice($params['price'])
             ->setStock($params['stock'])
         ;
+        if ($title = $params['pageTitle']) {
+            $category->setPageTitle($title);
+        }
+        if ($description = $params['pageDescription']) {
+            $category->setPageDescription($description);
+        }
+        if ($keywords = $params['pageKeywords']) {
+            $category->setPageKeywords($keywords);
+        }
         $this->_em->persist($product);
         $this->_em->flush();
         return $product;
@@ -70,6 +79,15 @@ class ProductRepository extends EntityRepository implements RepositoryInterface 
             ->setPrice($params['price'])
             ->setDiscount($params['discount'])
         ;
+        if ($title = $params['pageTitle']) {
+            $category->setPageTitle($title);
+        }
+        if ($description = $params['pageDescription']) {
+            $category->setPageDescription($description);
+        }
+        if ($keywords = $params['pageKeywords']) {
+            $category->setPageKeywords($keywords);
+        }
         $this->_em->persist($product);
         $this->_em->flush();
         return $product;
